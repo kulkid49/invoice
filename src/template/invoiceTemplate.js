@@ -277,7 +277,7 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
       </td>
     </tr>
     <tr>
-      <td colspan="5" class="no-border-left no-border-right">
+      <td colspan="5" class="no-border-left no-border-right no-border-top">
         <span class="font-bold">Declaration</span><br>
         We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.
       </td>
