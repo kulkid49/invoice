@@ -95,13 +95,79 @@ export function renderInvoice(data) {
   const subtotal = items.reduce((sum, item) => {
     return sum + (parseFloat(item.quantity || 0) * parseFloat(item.rate || 0));
   }, 0);
-  const vatPercent = parseFloat(totals.vatPercent || 0);
-  const vatAmount = (subtotal * vatPercent / 100).toFixed(2);
-  const grandTotal = (subtotal + parseFloat(vatAmount)).toFixed(2);
+
+  const taxType = totals.taxType || 'VAT';
+  const taxPercent = parseFloat(totals.taxPercent || 0);
+  const totalTaxAmount = (subtotal * taxPercent / 100).toFixed(2);
+  const grandTotal = (subtotal + parseFloat(totalTaxAmount)).toFixed(2);
   const subtotalQty = items.reduce((sum, i) => sum + parseFloat(i.quantity || 0), 0);
 
   const amountInWords = numberToWords(grandTotal);
-  const taxAmountWords = numberToWords(vatAmount);
+  const taxAmountWords = numberToWords(totalTaxAmount);
+
+  // Build Tax Rows
+  let taxRowsHTML = '';
+  if (taxType === 'GST') {
+    const halfPercent = (taxPercent / 2);
+    const halfAmount = (parseFloat(totalTaxAmount) / 2).toFixed(2);
+
+    // CGST Row
+    taxRowsHTML += `<tr style='height:14.75pt'>
+      <td width=104 nowrap valign=top style='width:77.65pt;border-top:none;border-left:solid windowtext 1.0pt;border-bottom:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=325 colspan=4 valign=top style='width:243.8pt;border:none;border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
+        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><b><i><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>CGST</span></i></b></p>
+      </td>
+      <td width=61 nowrap valign=top style='width:45.4pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=74 nowrap valign=top style='width:55.45pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=46 nowrap valign=top style='width:34.65pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
+        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>${halfPercent}%</span></p>
+      </td>
+      <td width=51 nowrap valign=top style='width:38.15pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=79 nowrap valign=top style='width:59.0pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
+        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'><b>${halfAmount}</b></span></p>
+      </td>
+      <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
+      <td style='height:14.75pt;border:none' width=0 height=20></td>
+    </tr>`;
+
+    // SGST Row
+    taxRowsHTML += `<tr style='height:14.75pt'>
+      <td width=104 nowrap valign=top style='width:77.65pt;border-top:none;border-left:solid windowtext 1.0pt;border-bottom:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=325 colspan=4 valign=top style='width:243.8pt;border:none;border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
+        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><b><i><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>SGST</span></i></b></p>
+      </td>
+      <td width=61 nowrap valign=top style='width:45.4pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=74 nowrap valign=top style='width:55.45pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=46 nowrap valign=top style='width:34.65pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
+        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>${halfPercent}%</span></p>
+      </td>
+      <td width=51 nowrap valign=top style='width:38.15pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=79 nowrap valign=top style='width:59.0pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
+        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'><b>${halfAmount}</b></span></p>
+      </td>
+      <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
+      <td style='height:14.75pt;border:none' width=0 height=20></td>
+    </tr>`;
+  } else {
+    // VAT Row (default)
+    taxRowsHTML = `<tr style='height:14.75pt'>
+      <td width=104 nowrap valign=top style='width:77.65pt;border-top:none;border-left:solid windowtext 1.0pt;border-bottom:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=325 colspan=4 valign=top style='width:243.8pt;border:none;border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
+        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><b><i><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>VAT</span></i></b></p>
+      </td>
+      <td width=61 nowrap valign=top style='width:45.4pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=74 nowrap valign=top style='width:55.45pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=46 nowrap valign=top style='width:34.65pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
+        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>${taxPercent}%</span></p>
+      </td>
+      <td width=51 nowrap valign=top style='width:38.15pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
+      <td width=79 nowrap valign=top style='width:59.0pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
+        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'><b>${totalTaxAmount}</b></span></p>
+      </td>
+      <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
+      <td style='height:14.75pt;border:none' width=0 height=20></td>
+    </tr>`;
+  }
 
   const html = INVOICE_TEMPLATE
     .replace('{{LOGO_CELL}}', buildLogoCellHTML(logoBase64))
@@ -139,8 +205,7 @@ export function renderInvoice(data) {
     .replace(/{{BUYER_STATE}}/g, esc(buyerDetails.state))
     .replace(/{{BUYER_PIN}}/g, esc(buyerDetails.pinCode))
     .replace('{{ITEMS_ROWS}}', buildItemRows(items))
-    .replace(/{{VAT_PERCENT}}/g, vatPercent || '')
-    .replace(/{{VAT_AMOUNT}}/g, parseFloat(vatAmount) ? vatAmount : '')
+    .replace('{{TAX_ROWS}}', taxRowsHTML)
     .replace(/{{SUBTOTAL_QTY}}/g, subtotalQty || '')
     .replace(/{{GRAND_TOTAL}}/g, parseFloat(grandTotal) ? grandTotal : '')
     .replace(/{{AMOUNT_IN_WORDS}}/g, amountInWords)

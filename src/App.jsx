@@ -17,7 +17,7 @@ const BLANK_INVOICE = () => ({
   consigneeDetails: {},
   buyerDetails: {},
   items: [],
-  totals: { vatPercent: '' },
+  totals: { taxType: 'VAT', taxPercent: '' },
   logoBase64: null,
   sealBase64: null,
   createdAt: null,

@@ -24,6 +24,28 @@ function Field({ label, id, value, onChange, placeholder, type = 'text', require
   );
 }
 
+function Select({ label, id, value, onChange, options, required, error }) {
+  return (
+    <div>
+      <label className="form-label" htmlFor={id}>
+        {label}{required && <span style={{ color: 'var(--danger)', marginLeft: 2 }}>*</span>}
+      </label>
+      <select
+        id={id}
+        className={`form-input${error ? ' border-red-500' : ''}`}
+        value={value || ''}
+        onChange={e => onChange(e.target.value)}
+        style={error ? { borderColor: 'var(--danger)' } : {}}
+      >
+        {options.map(opt => (
+          <option key={opt.value} value={opt.value}>{opt.label}</option>
+        ))}
+      </select>
+      {error && <p className="field-error">{error}</p>}
+    </div>
+  );
+}
+
 function TextArea({ label, id, value, onChange, placeholder, rows = 2 }) {
   return (
     <div>
@@ -179,14 +201,26 @@ export default function InvoiceForm({ data, onChange, errors = {} }) {
       {/* ── TAX & TOTALS ── */}
       <SectionHeader icon="💰" title="Tax & Totals" />
       <Grid cols={2}>
+        <Select
+          label="Tax Type"
+          id="tot-tax-type"
+          value={totals.taxType}
+          onChange={v => tot('taxType', v)}
+          options={[
+            { label: 'VAT', value: 'VAT' },
+            { label: 'GST', value: 'GST' }
+          ]}
+        />
         <Field
-          label="VAT / GST %"
-          id="tot-vat"
+          label={`${totals.taxType || 'Tax'} %`}
+          id="tot-tax-percent"
           type="number"
-          value={totals.vatPercent}
-          onChange={v => tot('vatPercent', v)}
+          value={totals.taxPercent}
+          onChange={v => tot('taxPercent', v)}
           placeholder="18"
         />
+      </Grid>
+      <Grid cols={1}>
         <div style={{ display: 'flex', alignItems: 'flex-end' }}>
           <div style={{ width: '100%' }}>
             <label className="form-label">Grand Total (Auto-calculated)</label>
@@ -202,8 +236,8 @@ export default function InvoiceForm({ data, onChange, errors = {} }) {
             }}>
               ₹ {(() => {
                 const sub = items.reduce((s, i) => s + parseFloat(i.quantity || 0) * parseFloat(i.rate || 0), 0);
-                const vat = sub * parseFloat(totals.vatPercent || 0) / 100;
-                return (sub + vat).toFixed(2);
+                const tax = sub * parseFloat(totals.taxPercent || 0) / 100;
+                return (sub + tax).toFixed(2);
               })()}
             </div>
           </div>

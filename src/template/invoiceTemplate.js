@@ -414,52 +414,7 @@ body { font-family: Arial, sans-serif; }
  <!-- Dynamic item rows injected here -->
  {{ITEMS_ROWS}}
 
- <!-- VAT row -->
- <tr style='height:14.75pt'>
-  <td width=104 nowrap valign=top style='width:77.65pt;border-top:none;
-  border-left:solid windowtext 1.0pt;border-bottom:none;border-right:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
-  </td>
-  <td width=325 colspan=4 valign=top style='width:243.8pt;border:none;
-  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><b><i><span lang=EN-IN style='font-size:10.0pt;
-  font-family:"Arial",sans-serif;color:black'>VAT</span></i></b></p>
-  </td>
-  <td width=61 nowrap valign=top style='width:45.4pt;border:none;border-right:
-  solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
-  </td>
-  <td width=74 nowrap valign=top style='width:55.45pt;border:none;border-right:
-  solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><b><span lang=EN-IN style='font-size:10.0pt;font-family:
-  "Arial",sans-serif;color:black'>&nbsp;</span></b></p>
-  </td>
-  <td width=46 nowrap valign=top style='width:34.65pt;border:none;border-right:
-  solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><span lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;
-  color:black'>{{VAT_PERCENT}}%</span></p>
-  </td>
-  <td width=51 nowrap valign=top style='width:38.15pt;border:none;border-right:
-  solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><span lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;
-  color:black'>&nbsp;</span></p>
-  </td>
-  <td width=79 nowrap valign=top style='width:59.0pt;border:none;border-right:
-  solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><span lang=EN-IN style='font-size:10.0pt;font-family:
-  "Arial",sans-serif;color:black'><b>{{VAT_AMOUNT}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
+ {{TAX_ROWS}}
 
  <!-- Total row -->
  <tr style='height:15.8pt'>
