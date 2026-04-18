@@ -13,59 +13,27 @@ function esc(val) {
 
 function buildItemRows(items) {
   if (!items || items.length === 0) {
-    return `<tr style='height:30pt'>
-      <td style='border-left:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt'>&nbsp;</td>
-      <td colspan=4 style='border-right:solid black 1.0pt;padding:0in 5.4pt'>&nbsp;</td>
-      <td style='border-right:solid windowtext 1.0pt;padding:0in 5.4pt'>&nbsp;</td>
-      <td style='border-right:solid windowtext 1.0pt;padding:0in 5.4pt'>&nbsp;</td>
-      <td style='border-right:solid windowtext 1.0pt;padding:0in 5.4pt'>&nbsp;</td>
-      <td style='border-right:solid windowtext 1.0pt;padding:0in 5.4pt'>&nbsp;</td>
-      <td style='border-right:solid windowtext 1.0pt;padding:0in 5.4pt'>&nbsp;</td>
-      <td style='padding:0in 0in 0in 0in'></td><td width=0></td>
+    return `<tr>
+      <td>&nbsp;</td>
+      <td colspan=4>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>`;
   }
 
   return items.map((item, idx) => {
     const amount = (parseFloat(item.quantity || 0) * parseFloat(item.rate || 0)).toFixed(2);
-    return `<tr style='height:14.75pt'>
-     <td width=104 nowrap valign=top style='width:77.65pt;border-top:none;
-     border-left:solid windowtext 1.0pt;border-bottom:none;border-right:solid windowtext 1.0pt;
-     padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-     <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;line-height:normal'><span
-     lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>${idx + 1}</span></p>
-     </td>
-     <td width=325 colspan=4 valign=top style='width:243.8pt;border:none;
-     border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-     <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-     lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>${esc(item.description)}</span></p>
-     </td>
-     <td width=61 nowrap valign=top style='width:45.4pt;border:none;border-right:
-     solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-     <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;line-height:normal'><span
-     lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>${esc(item.sku)}</span></p>
-     </td>
-     <td width=74 nowrap valign=top style='width:55.45pt;border:none;border-right:
-     solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-     <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span
-     lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>${esc(item.quantity)}</span></p>
-     </td>
-     <td width=46 nowrap valign=top style='width:34.65pt;border:none;border-right:
-     solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-     <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span
-     lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>${esc(item.rate)}</span></p>
-     </td>
-     <td width=51 nowrap valign=top style='width:38.15pt;border:none;border-right:
-     solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-     <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span
-     lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>${esc(item.per)}</span></p>
-     </td>
-     <td width=79 nowrap valign=top style='width:59.0pt;border:none;border-right:
-     solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-     <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span
-     lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>${amount}</span></p>
-     </td>
-     <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-     <td style='height:14.75pt;border:none' width=0 height=20></td>
+    return `<tr>
+     <td class="text-center">${idx + 1}</td>
+     <td colspan=4>${esc(item.description)}</td>
+     <td class="text-center">${esc(item.sku)}</td>
+     <td class="text-right">${esc(item.quantity)}</td>
+     <td class="text-right">${esc(item.rate)}</td>
+     <td class="text-right">${esc(item.per)}</td>
+     <td class="text-right font-bold">${amount}</td>
     </tr>`;
   }).join('\n');
 }
@@ -112,60 +80,36 @@ export function renderInvoice(data) {
     const halfAmount = (parseFloat(totalTaxAmount) / 2).toFixed(2);
 
     // CGST Row
-    taxRowsHTML += `<tr style='height:14.75pt'>
-      <td width=104 nowrap valign=top style='width:77.65pt;border-top:none;border-left:solid windowtext 1.0pt;border-bottom:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=325 colspan=4 valign=top style='width:243.8pt;border:none;border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><b><i><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>CGST</span></i></b></p>
-      </td>
-      <td width=61 nowrap valign=top style='width:45.4pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=74 nowrap valign=top style='width:55.45pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=46 nowrap valign=top style='width:34.65pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>${halfPercent}%</span></p>
-      </td>
-      <td width=51 nowrap valign=top style='width:38.15pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=79 nowrap valign=top style='width:59.0pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'><b>${halfAmount}</b></span></p>
-      </td>
-      <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-      <td style='height:14.75pt;border:none' width=0 height=20></td>
+    taxRowsHTML += `<tr>
+      <td class="no-border-top no-border-bottom"></td>
+      <td colspan="4" class="text-right font-bold font-italic">CGST</td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="text-right">${halfPercent}%</td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="text-right font-bold">${halfAmount}</td>
     </tr>`;
 
     // SGST Row
-    taxRowsHTML += `<tr style='height:14.75pt'>
-      <td width=104 nowrap valign=top style='width:77.65pt;border-top:none;border-left:solid windowtext 1.0pt;border-bottom:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=325 colspan=4 valign=top style='width:243.8pt;border:none;border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><b><i><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>SGST</span></i></b></p>
-      </td>
-      <td width=61 nowrap valign=top style='width:45.4pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=74 nowrap valign=top style='width:55.45pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=46 nowrap valign=top style='width:34.65pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>${halfPercent}%</span></p>
-      </td>
-      <td width=51 nowrap valign=top style='width:38.15pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=79 nowrap valign=top style='width:59.0pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'><b>${halfAmount}</b></span></p>
-      </td>
-      <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-      <td style='height:14.75pt;border:none' width=0 height=20></td>
+    taxRowsHTML += `<tr>
+      <td class="no-border-top no-border-bottom"></td>
+      <td colspan="4" class="text-right font-bold font-italic">SGST</td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="text-right">${halfPercent}%</td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="text-right font-bold">${halfAmount}</td>
     </tr>`;
   } else {
     // VAT Row (default)
-    taxRowsHTML = `<tr style='height:14.75pt'>
-      <td width=104 nowrap valign=top style='width:77.65pt;border-top:none;border-left:solid windowtext 1.0pt;border-bottom:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=325 colspan=4 valign=top style='width:243.8pt;border:none;border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><b><i><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>VAT</span></i></b></p>
-      </td>
-      <td width=61 nowrap valign=top style='width:45.4pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=74 nowrap valign=top style='width:55.45pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=46 nowrap valign=top style='width:34.65pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>${taxPercent}%</span></p>
-      </td>
-      <td width=51 nowrap valign=top style='width:38.15pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>&nbsp;</td>
-      <td width=79 nowrap valign=top style='width:59.0pt;border:none;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-        <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;line-height:normal'><span lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'><b>${totalTaxAmount}</b></span></p>
-      </td>
-      <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-      <td style='height:14.75pt;border:none' width=0 height=20></td>
+    taxRowsHTML = `<tr>
+      <td class="no-border-top no-border-bottom"></td>
+      <td colspan="4" class="text-right font-bold font-italic">VAT</td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="text-right">${taxPercent}%</td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="text-right font-bold">${totalTaxAmount}</td>
     </tr>`;
   }
 

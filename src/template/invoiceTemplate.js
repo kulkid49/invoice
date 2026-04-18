@@ -1,573 +1,303 @@
 // invoiceTemplate.js
 // The original Invoice.html content with static placeholders replaced by {{TOKEN}} tokens.
-// DO NOT alter the table structure, colspan/rowspan, or inline styles.
+// DO NOT alter the table structure, colspan/rowspan.
 
 export const INVOICE_TEMPLATE = `<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <style>
-@font-face { font-family:"Cambria Math"; panose-1:2 4 5 3 5 4 6 3 2 4; }
-@font-face { font-family:Calibri; panose-1:2 15 5 2 2 2 4 3 2 4; }
-@font-face { font-family:Aptos; panose-1:2 11 0 4 2 2 2 2 2 4; }
-p.MsoNormal, li.MsoNormal, div.MsoNormal {
-  margin-top:0in; margin-right:0in; margin-bottom:8.0pt;
-  margin-left:0in; line-height:107%; font-size:11.0pt; font-family:"Aptos",sans-serif;
-}
-.MsoChpDefault { font-size:12.0pt; font-family:"Aptos",sans-serif; }
-.MsoPapDefault { margin-bottom:8.0pt; line-height:115%; }
-@page WordSection1 { size:595.3pt 841.9pt; margin:1.0in 1.0in 1.0in 21.3pt; }
-div.WordSection1 { page:WordSection1; }
-body { font-family: Arial, sans-serif; }
-@media print {
-  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-}
+  * { box-sizing: border-box; }
+  body { 
+    font-family: "Arial", sans-serif; 
+    margin: 0; 
+    padding: 0; 
+    color: #000;
+    line-height: 1.4;
+    font-size: 8pt;
+  }
+  .invoice-container {
+    width: 720px; /* Reduced from 754px to fit A4 margins perfectly */
+    margin: 0 auto;
+    background: #fff;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    border: 2px solid #000; /* Thicker outside border */
+  }
+  td {
+    border: 1px solid #000;
+    padding: 8px 10px;
+    vertical-align: top;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .header-cell {
+    background: #7F7F7F;
+    color: #fff;
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    padding: 10px;
+  }
+  .section-title {
+    background: #FFF2CC;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  .font-bold { font-weight: bold; }
+  .font-italic { font-style: italic; }
+  .text-center { text-align: center; }
+  .text-right { text-align: right; }
+  .text-muted { color: #666; }
+  .no-border-top { border-top: none; }
+  .no-border-bottom { border-bottom: none; }
+  .no-border-left { border-left: none; }
+  .no-border-right { border-right: none; }
+  .border-none { border: none; }
+  
+  /* Logo cell specific styling */
+  .logo-cell {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  /* Table row height logic */
+  tr { height: auto; }
+  
+  /* Footer alignment */
+  .footer-row td {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    vertical-align: bottom;
+  }
+  
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
 </style>
 </head>
-<body lang=EN-US style='word-wrap:break-word'>
-<div class=WordSection1>
+<body>
+<div class="invoice-container">
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=754
- style='width:7.85in;border-collapse:collapse'>
- <tr style='height:20.35pt'>
-  <td width=739 nowrap colspan=10 style='width:554.1pt;border:solid windowtext 1.0pt;
-  background:#7F7F7F;padding:0in 5.4pt 0in 5.4pt;height:20.35pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><span lang=EN-IN style='font-size:16.0pt;font-family:
-  "Arial",sans-serif;color:white'>Invoice</span></b></p>
-  </td>
-  <td style='border:none;padding:0in 0in 0in 0in' width=15><p class='MsoNormal'>&nbsp;</td>
-  <td style='height:20.35pt;border:none' width=0 height=27></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=132 nowrap colspan=2 rowspan=8 style='width:99.0pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  {{LOGO_CELL}}
-  </td>
-  <td width=189 nowrap colspan=2 valign=top style='width:142.05pt;border-top:
-  none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>{{COMPANY_NAME}}</span></p>
-  </td>
-  <td width=168 nowrap colspan=2 rowspan=2 valign=top style='width:125.8pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Invoice No.<br><b>{{INVOICE_NO}}</b></span></p>
-  </td>
-  <td width=250 nowrap colspan=4 rowspan=2 valign=top style='width:187.25pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Dated<br><b>{{DATED}}</b></span></p>
-  </td>
-  <td style='border:none;padding:0in 0in 0in 0in' width=15><p class='MsoNormal'>&nbsp;</td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:23.55pt'>
-  <td width=189 nowrap colspan=2 rowspan=3 valign=top style='width:142.05pt;
-  border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
-  border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:23.55pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>{{COMPANY_ADDRESS}}</span></p>
-  </td>
-  <td style='border:none;padding:0in 0in 0in 0in' width=15><p class='MsoNormal'>&nbsp;</td>
-  <td style='height:23.55pt;border:none' width=0 height=31></td>
- </tr>
- <tr style='height:23.55pt'>
-  <td width=168 nowrap colspan=2 rowspan=2 valign=top style='width:125.8pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:23.55pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Delivery Note<br><b>{{DELIVERY_NOTE}}</b></span></p>
-  </td>
-  <td width=250 nowrap colspan=4 rowspan=2 valign=top style='width:187.25pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:23.55pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Mode/Terms of Payment<br><b>{{PAYMENT_TERMS}}</b></span></p>
-  </td>
-  <td style='border:none;padding:0in 0in 0in 0in' width=15><p class='MsoNormal'>&nbsp;</td>
-  <td style='height:23.55pt;border:none' width=0 height=31></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=15 nowrap valign=bottom style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;
-  height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=189 nowrap colspan=2 valign=top style='width:142.05pt;border-top:
-  none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>VAT NO: <b>{{VAT_NO}}</b></span></p>
-  </td>
-  <td width=168 nowrap colspan=2 rowspan=2 valign=top style='width:125.8pt;
-  border:none;border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;
-  height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Reference No. &amp; Date.<br><b>{{REF_NO_DATE}}</b></span></p>
-  </td>
-  <td width=250 nowrap colspan=4 rowspan=2 valign=top style='width:187.25pt;
-  border:none;border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;
-  height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Other References<br><b>{{OTHER_REF}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=94 nowrap valign=top style='width:70.3pt;border-top:none;
-  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>State: <b>{{STATE}}</b></span></p>
-  </td>
-  <td width=96 nowrap valign=top style='width:71.75pt;border-top:none;
-  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Pin: <b>{{PIN_CODE}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=189 nowrap colspan=2 valign=top style='width:142.05pt;border-top:
-  none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Contact: <b>{{CONTACT}}</b></span></p>
-  </td>
-  <td width=168 nowrap colspan=2 rowspan=2 valign=top style='width:125.8pt;
-  border-top:solid windowtext 1.0pt;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Buyer's Order No.<br><b>{{BUYERS_ORDER_NO}}</b></span></p>
-  </td>
-  <td width=250 nowrap colspan=4 rowspan=2 valign=top style='width:187.25pt;
-  border-top:solid windowtext 1.0pt;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Dated<br><b>{{BUYERS_ORDER_DATED}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=189 nowrap colspan=2 valign=top style='width:142.05pt;border-top:
-  none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>e-Mail: <b>{{EMAIL}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
+  <table cellspacing=0 cellpadding=0>
+    <!-- Main Title -->
+    <tr>
+      <td colspan="10" class="header-cell">Invoice</td>
+    </tr>
 
- <!-- Consignee & right columns -->
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;background:#FFF2CC;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><b><u><span
-  lang=EN-IN style='font-family:"Arial",sans-serif;color:black'>Consignee (Ship to)</span></u></b></p>
-  </td>
-  <td width=168 nowrap colspan=2 rowspan=2 valign=top style='width:125.8pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Dispatch Doc No.<br><b>{{DISPATCH_DOC_NO}}</b></span></p>
-  </td>
-  <td width=250 nowrap colspan=4 rowspan=2 valign=top style='width:187.25pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Delivery Note Date<br><b>{{DELIVERY_NOTE_DATE}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'><b>{{CONSIGNEE_NAME}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>{{CONSIGNEE_ADDRESS}}</span></p>
-  </td>
-  <td width=168 nowrap colspan=2 rowspan=2 valign=top style='width:125.8pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Dispatched through<br><b>{{DISPATCHED_THROUGH}}</b></span></p>
-  </td>
-  <td width=250 nowrap colspan=4 rowspan=2 valign=top style='width:187.25pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Destination<br><b>{{DESTINATION}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>GSTIN/UIN: <b>{{CONSIGNEE_GSTIN}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
+    <!-- Company Info & Invoice Header -->
+    <tr>
+      <td colspan="2" rowspan="8" class="logo-cell no-border-top">
+        {{LOGO_CELL}}
+      </td>
+      <td colspan="2" class="no-border-top no-border-left font-bold">
+        {{COMPANY_NAME}}
+      </td>
+      <td colspan="2" rowspan="2" class="no-border-top no-border-left">
+        <span class="text-muted">Invoice No.</span><br>
+        <span class="font-bold">{{INVOICE_NO}}</span>
+      </td>
+      <td colspan="4" rowspan="2" class="no-border-top no-border-left">
+        <span class="text-muted">Dated</span><br>
+        <span class="font-bold">{{DATED}}</span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="3" class="no-border-left">
+        {{COMPANY_ADDRESS}}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="2" class="no-border-left">
+        <span class="text-muted">Delivery Note</span><br>
+        <span class="font-bold">{{DELIVERY_NOTE}}</span>
+      </td>
+      <td colspan="4" rowspan="2" class="no-border-left">
+        <span class="text-muted">Mode/Terms of Payment</span><br>
+        <span class="font-bold">{{PAYMENT_TERMS}}</span>
+      </td>
+    </tr>
+    <tr></tr> <!-- Dummy row for rowspan -->
+    <tr>
+      <td colspan="2" class="no-border-left">
+        VAT NO: <span class="font-bold">{{VAT_NO}}</span>
+      </td>
+      <td colspan="2" rowspan="2" class="no-border-left">
+        <span class="text-muted">Reference No. & Date.</span><br>
+        <span class="font-bold">{{REF_NO_DATE}}</span>
+      </td>
+      <td colspan="4" rowspan="2" class="no-border-left">
+        <span class="text-muted">Other References</span><br>
+        <span class="font-bold">{{OTHER_REF}}</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="no-border-left">State: <span class="font-bold">{{STATE}}</span></td>
+      <td class="no-border-left">Pin: <span class="font-bold">{{PIN_CODE}}</span></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="no-border-left">
+        Contact: <span class="font-bold">{{CONTACT}}</span>
+      </td>
+      <td colspan="2" rowspan="2" class="no-border-left">
+        <span class="text-muted">Buyer's Order No.</span><br>
+        <span class="font-bold">{{BUYERS_ORDER_NO}}</span>
+      </td>
+      <td colspan="4" rowspan="2" class="no-border-left">
+        <span class="text-muted">Dated</span><br>
+        <span class="font-bold">{{BUYERS_ORDER_DATED}}</span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="no-border-left">
+        e-Mail: <span class="font-bold">{{EMAIL}}</span>
+      </td>
+    </tr>
 
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Bill of Lading/LR-RR No.: <b>{{BILL_OF_LADING}}</b></span></p>
-  </td>
-  <td width=168 nowrap colspan=2 rowspan=2 valign=top style='width:125.8pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Motor Vehicle No.<br><b>{{MOTOR_VEHICLE_NO}}</b></span></p>
-  </td>
-  <td width=250 nowrap colspan=4 rowspan=2 valign=top style='width:187.25pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>State: <b>{{CONSIGNEE_STATE}}</b> &nbsp;&nbsp; Pin: <b>{{CONSIGNEE_PIN}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
+    <!-- Consignee & Dispatch Info -->
+    <tr>
+      <td colspan="4" class="section-title no-border-top">Consignee (Ship to)</td>
+      <td colspan="2" rowspan="2" class="no-border-top no-border-left">
+        <span class="text-muted">Dispatch Doc No.</span><br>
+        <span class="font-bold">{{DISPATCH_DOC_NO}}</span>
+      </td>
+      <td colspan="4" rowspan="2" class="no-border-top no-border-left">
+        <span class="text-muted">Delivery Note Date</span><br>
+        <span class="font-bold">{{DELIVERY_NOTE_DATE}}</span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" class="no-border-left font-bold">{{CONSIGNEE_NAME}}</td>
+    </tr>
+    <tr>
+      <td colspan="4" rowspan="2" class="no-border-left">
+        {{CONSIGNEE_ADDRESS}}
+      </td>
+      <td colspan="2" rowspan="2" class="no-border-left">
+        <span class="text-muted">Dispatched through</span><br>
+        <span class="font-bold">{{DISPATCHED_THROUGH}}</span>
+      </td>
+      <td colspan="4" rowspan="2" class="no-border-left">
+        <span class="text-muted">Destination</span><br>
+        <span class="font-bold">{{DESTINATION}}</span>
+      </td>
+    </tr>
+    <tr></tr>
+    <tr>
+      <td colspan="4" class="no-border-left">GSTIN/UIN: <span class="font-bold">{{CONSIGNEE_GSTIN}}</span></td>
+      <td colspan="2" rowspan="2" class="no-border-left">
+        <span class="text-muted">Motor Vehicle No.</span><br>
+        <span class="font-bold">{{MOTOR_VEHICLE_NO}}</span>
+      </td>
+      <td colspan="4" rowspan="2" class="no-border-left"></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="no-border-left">
+        State: <span class="font-bold">{{CONSIGNEE_STATE}}</span> &nbsp;&nbsp; Pin: <span class="font-bold">{{CONSIGNEE_PIN}}</span>
+      </td>
+    </tr>
 
- <!-- Buyer section with Terms of Delivery spanning right -->
- <tr style='height:14.75pt'>
-  <td width=132 nowrap colspan=2 valign=top style='width:99.0pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>State: <b>{{STATE}}</b></span></p>
-  </td>
-  <td width=189 nowrap colspan=2 valign=top style='width:142.05pt;border-top:
-  none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Pin code: <b>{{PIN_CODE}}</b></span></p>
-  </td>
-  <td width=417 nowrap colspan=6 rowspan=8 valign=top style='width:313.05pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Terms of Delivery<br><b>{{TERMS_OF_DELIVERY}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;background:#FFF2CC;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><b><u><span
-  lang=EN-IN style='font-family:"Arial",sans-serif;color:black'>Buyer (Bill to)</span></u></b></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'><b>{{BUYER_NAME}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>{{BUYER_ADDRESS}}</span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>GSTIN/UIN: <b>{{BUYER_GSTIN}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=132 nowrap colspan=2 valign=top style='width:99.0pt;border:solid windowtext 1.0pt;
-  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>State: <b>{{BUYER_STATE}}</b></span></p>
-  </td>
-  <td width=189 nowrap colspan=2 valign=top style='width:142.05pt;border-top:
-  none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Pin code: <b>{{BUYER_PIN}}</b></span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
+    <!-- Buyer & Terms of Delivery -->
+    <tr>
+      <td colspan="2" class="no-border-left">State: <span class="font-bold">{{STATE}}</span></td>
+      <td colspan="2" class="no-border-left">Pin code: <span class="font-bold">{{PIN_CODE}}</span></td>
+      <td colspan="6" rowspan="8" class="no-border-left">
+        <span class="text-muted">Terms of Delivery</span><br>
+        <span class="font-bold">{{TERMS_OF_DELIVERY}}</span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" class="section-title no-border-left">Buyer (Bill to)</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="no-border-left font-bold">{{BUYER_NAME}}</td>
+    </tr>
+    <tr>
+      <td colspan="4" rowspan="3" class="no-border-left">
+        {{BUYER_ADDRESS}}
+      </td>
+    </tr>
+    <tr></tr>
+    <tr></tr>
+    <tr>
+      <td colspan="4" class="no-border-left">GSTIN/UIN: <span class="font-bold">{{BUYER_GSTIN}}</span></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="no-border-left">State: <span class="font-bold">{{BUYER_STATE}}</span></td>
+      <td colspan="2" class="no-border-left">Pin code: <span class="font-bold">{{BUYER_PIN}}</span></td>
+    </tr>
 
- <!-- Items table header -->
- <tr style='height:14.75pt'>
-  <td width=104 nowrap rowspan=2 style='width:77.65pt;border-top:none;
-  border-left:solid windowtext 1.0pt;border-bottom:solid black 1.0pt;
-  border-right:solid windowtext 1.0pt;background:#FFF2CC;padding:0in 5.4pt 0in 5.4pt;
-  height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><u><span lang=EN-IN style='font-family:"Arial",sans-serif;
-  color:black'>Sl. No.</span></u></b></p>
-  </td>
-  <td width=325 nowrap colspan=4 rowspan=2 style='width:243.8pt;border-top:
-  none;border-left:none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
-  background:#FFF2CC;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><u><span lang=EN-IN style='font-family:"Arial",sans-serif;
-  color:black'>Description of Goods</span></u></b></p>
-  </td>
-  <td width=61 nowrap rowspan=2 style='width:45.4pt;border-top:none;border-left:
-  none;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  background:#FFF2CC;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><u><span lang=EN-IN style='font-family:"Arial",sans-serif;
-  color:black'>SKU</span></u></b></p>
-  </td>
-  <td width=74 nowrap rowspan=2 style='width:55.45pt;border-top:none;
-  border-left:none;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  background:#FFF2CC;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><u><span lang=EN-IN style='font-family:"Arial",sans-serif;
-  color:black'>Quantity</span></u></b></p>
-  </td>
-  <td width=46 nowrap rowspan=2 style='width:34.65pt;border-top:none;
-  border-left:none;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  background:#FFF2CC;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><u><span lang=EN-IN style='font-family:"Arial",sans-serif;
-  color:black'>Rate</span></u></b></p>
-  </td>
-  <td width=51 nowrap rowspan=2 style='width:38.15pt;border-top:none;
-  border-left:none;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  background:#FFF2CC;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><u><span lang=EN-IN style='font-family:"Arial",sans-serif;
-  color:black'>per</span></u></b></p>
-  </td>
-  <td width=79 nowrap rowspan=2 style='width:59.0pt;border-top:none;border-left:
-  none;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
-  background:#FFF2CC;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><u><span lang=EN-IN style='font-family:"Arial",sans-serif;
-  color:black'>Amount</span></u></b></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=15 nowrap valign=bottom style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;
-  height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
+    <!-- Items table header -->
+    <tr class="section-title text-center">
+      <td style="width: 50px;">Sl. No.</td>
+      <td colspan="4">Description of Goods</td>
+      <td style="width: 70px;">SKU</td>
+      <td style="width: 80px;">Quantity</td>
+      <td style="width: 70px;">Rate</td>
+      <td style="width: 60px;">per</td>
+      <td style="width: 90px;">Amount</td>
+    </tr>
 
- <!-- Dynamic item rows injected here -->
- {{ITEMS_ROWS}}
+    <!-- Dynamic item rows injected here -->
+    {{ITEMS_ROWS}}
 
- {{TAX_ROWS}}
+    <!-- Tax Rows -->
+    {{TAX_ROWS}}
 
- <!-- Total row -->
- <tr style='height:15.8pt'>
-  <td width=104 nowrap valign=top style='width:77.65pt;border:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:15.8pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
-  </td>
-  <td width=325 nowrap colspan=4 valign=top style='width:243.8pt;border-top:
-  solid windowtext 1.0pt;border-left:none;border-bottom:solid windowtext 1.0pt;
-  border-right:none;padding:0in 5.4pt 0in 5.4pt;height:15.8pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><b><span lang=EN-IN style='font-size:9.0pt;font-family:
-  "Arial",sans-serif;color:black'>Total</span></b></p>
-  </td>
-  <td width=61 nowrap valign=top style='width:45.4pt;border:solid windowtext 1.0pt;
-  border-right:none;padding:0in 5.4pt 0in 5.4pt;height:15.8pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><span lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;
-  color:black'>&nbsp;</span></p>
-  </td>
-  <td width=74 nowrap valign=top style='width:55.45pt;border:solid windowtext 1.0pt;
-  border-right:none;padding:0in 5.4pt 0in 5.4pt;height:15.8pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><b><span lang=EN-IN style='font-size:10.0pt;font-family:
-  "Arial",sans-serif;color:black'>{{SUBTOTAL_QTY}}</span></b></p>
-  </td>
-  <td width=46 nowrap valign=top style='width:34.65pt;border:solid windowtext 1.0pt;
-  border-right:none;padding:0in 5.4pt 0in 5.4pt;height:15.8pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><b><span lang=EN-IN style='font-size:9.0pt;font-family:
-  "Arial",sans-serif;color:black'>&nbsp;</span></b></p>
-  </td>
-  <td width=51 nowrap valign=top style='width:38.15pt;border:solid windowtext 1.0pt;
-  border-right:none;padding:0in 5.4pt 0in 5.4pt;height:15.8pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><b><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></b></p>
-  </td>
-  <td width=79 nowrap valign=top style='width:59.0pt;border:solid windowtext 1.0pt;
-  padding:0in 5.4pt 0in 5.4pt;height:15.8pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><b><span lang=EN-IN style='font-size:12.0pt;font-family:
-  "Arial",serif;color:black'>{{GRAND_TOTAL}}</span></b></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:15.8pt'></td>
-  <td style='height:15.8pt;border:none' width=0 height=21></td>
- </tr>
+    <!-- Total row -->
+    <tr class="font-bold">
+      <td class="no-border-top no-border-bottom"></td>
+      <td colspan="4" class="text-right">Total</td>
+      <td class="no-border-left no-border-right"></td>
+      <td class="text-right">{{SUBTOTAL_QTY}}</td>
+      <td colspan="2" class="no-border-left no-border-right"></td>
+      <td class="text-right" style="font-size: 10pt;">{{GRAND_TOTAL}}</td>
+    </tr>
 
- <!-- Amount in words -->
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border:none;
-  border-left:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><b><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Amount Chargeable (in words)</span></b></p>
-  </td>
-  <td width=417 nowrap colspan=6 valign=top style='width:313.05pt;border:none;
-  border-right:solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0in;text-align:right;
-  line-height:normal'><i><span lang=EN-IN style='font-size:9.0pt;font-family:
-  "Arial",sans-serif;color:black'>{{AMOUNT_IN_WORDS}}</span></i></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
+    <!-- Amount in words -->
+    <tr>
+      <td colspan="5" class="no-border-left no-border-right no-border-bottom">
+        <span class="font-bold">Amount Chargeable (in words)</span>
+      </td>
+      <td colspan="5" class="text-right no-border-left no-border-right no-border-bottom font-italic">
+        {{AMOUNT_IN_WORDS}}
+      </td>
+    </tr>
 
- <!-- Tax amount + Authorised signatory -->
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border-top:
-  solid windowtext 1.0pt;border-left:solid windowtext 1.0pt;border-bottom:none;
-  border-right:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Tax Amount (in words): <i>{{TAX_AMOUNT_WORDS}}</i></span></p>
-  </td>
-  <td width=417 colspan=6 rowspan=3 valign=top style='width:313.05pt;
-  border-top:windowtext;border-left:windowtext;border-bottom:black;border-right:
-  black;border-style:solid;border-width:1.0pt;padding:0in 5.4pt 0in 5.4pt;
-  height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'>{{SEAL_CELL}}</p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 valign=top style='width:241.05pt;border-top:
-  none;border-left:solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;
-  border-right:none;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>Declaration</span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:40.25pt'>
-  <td width=321 colspan=4 valign=top style='width:241.05pt;border:none;
-  border-left:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:40.25pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'><span
-  lang=EN-IN style='font-size:9.0pt;font-family:"Arial",sans-serif;color:black'>We
-  declare that this invoice shows the actual price of the goods described and
-  that all particulars are true and correct.</span></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:40.25pt'></td>
-  <td style='height:40.25pt;border:none' width=0 height=54></td>
- </tr>
+    <!-- Tax amount + Declaration & Signatures -->
+    <tr>
+      <td colspan="5" class="no-border-left no-border-right no-border-bottom">
+        Tax Amount (in words): <span class="font-italic">{{TAX_AMOUNT_WORDS}}</span>
+      </td>
+      <td colspan="5" rowspan="3" class="text-center">
+        {{SEAL_CELL}}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5" class="no-border-left no-border-right no-border-bottom">
+        <span class="font-bold">Declaration</span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5" class="no-border-left no-border-right">
+        We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.
+      </td>
+    </tr>
 
- <!-- Signature row -->
- <tr style='height:14.75pt'>
-  <td width=321 nowrap colspan=4 rowspan=3 valign=bottom style='width:241.05pt;
-  border-top:windowtext;border-left:windowtext;border-bottom:black;border-right:
-  black;border-style:solid;border-width:1.0pt;padding:0in 5.4pt 0in 5.4pt;
-  height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><span lang=EN-IN style='font-size:9.0pt;font-family:
-  "Arial",sans-serif;color:black'>Customer's Seal and Signature</span></b></p>
-  </td>
-  <td width=417 nowrap colspan=6 rowspan=3 valign=bottom style='width:313.05pt;
-  border-top:none;border-left:none;border-bottom:solid black 1.0pt;border-right:
-  solid black 1.0pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'>
-  <p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;
-  line-height:normal'><b><span lang=EN-IN style='font-size:9.0pt;font-family:
-  "Arial",sans-serif;color:black'>Authorised Signatory</span></b></p>
-  </td>
-  <td width=15 style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=15 nowrap valign=bottom style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;
-  height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
- <tr style='height:14.75pt'>
-  <td width=15 nowrap valign=bottom style='width:11.1pt;padding:0in 5.4pt 0in 5.4pt;
-  height:14.75pt'></td>
-  <td style='height:14.75pt;border:none' width=0 height=20></td>
- </tr>
+    <!-- Signatures -->
+    <tr class="footer-row">
+      <td colspan="5" class="text-center font-bold">
+        Customer's Seal and Signature
+      </td>
+      <td colspan="5" class="text-center font-bold no-border-left">
+        Authorised Signatory
+      </td>
+    </tr>
+  </table>
 
- <tr height=0>
-  <td width=104 style='border:none'></td>
-  <td width=28 style='border:none'></td>
-  <td width=94 style='border:none'></td>
-  <td width=96 style='border:none'></td>
-  <td width=107 style='border:none'></td>
-  <td width=61 style='border:none'></td>
-  <td width=74 style='border:none'></td>
-  <td width=46 style='border:none'></td>
-  <td width=51 style='border:none'></td>
-  <td width=79 style='border:none'></td>
-  <td width=15 style='border:none'></td>
-  <td style='border:none' width=0><p class='MsoNormal'>&nbsp;</td>
- </tr>
-</table>
-
-<p class=MsoNormal><span lang=EN-IN>&nbsp;</span></p>
 </div>
 </body>
 </html>`;

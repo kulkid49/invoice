@@ -109,6 +109,8 @@ export default function App() {
 
     const container = document.createElement('div');
     container.innerHTML = htmlString;
+    // Set fixed width to match template and avoid cutoff during capture
+    container.style.width = '720px';
     container.style.background = 'white';
     document.body.appendChild(container);
 
@@ -117,9 +119,15 @@ export default function App() {
 
     await html2pdf()
       .set({
-        margin: [8, 8, 8, 8],
+        margin: [10, 5, 10, 5], // [top, left, bottom, right] - adjusted for better fit
         filename,
-        html2canvas: { scale: 2, useCORS: true, logging: false },
+        html2canvas: { 
+          scale: 2, 
+          useCORS: true, 
+          logging: false,
+          width: 720, // Ensure the full width is captured
+          windowWidth: 720
+        },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: 'avoid-all' }
       })

@@ -72,9 +72,6 @@ export default function InvoicePreview({ data, onDownloadPDF }) {
             sandbox="allow-same-origin"
           />
         </div>
-        <p style={{ fontSize: 11, color: 'var(--text-muted)', textAlign: 'center' }}>
-          A4 preview — PDF will match this layout exactly
-        </p>
       </div>
     </div>
   );
