@@ -272,17 +272,13 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
       <td colspan="5" class="no-border-left no-border-right no-border-bottom">
         Tax Amount (in words): <span class="font-italic">{{TAX_AMOUNT_WORDS}}</span>
       </td>
-      <td colspan="5" rowspan="3" class="text-center">
+      <td colspan="5" rowspan="2" class="text-center">
         {{SEAL_CELL}}
       </td>
     </tr>
     <tr>
-      <td colspan="5" class="no-border-left no-border-right no-border-bottom">
-        <span class="font-bold">Declaration</span>
-      </td>
-    </tr>
-    <tr>
       <td colspan="5" class="no-border-left no-border-right">
+        <span class="font-bold">Declaration</span><br>
         We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.
       </td>
     </tr>
