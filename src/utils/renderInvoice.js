@@ -41,7 +41,7 @@ function buildItemRows(items) {
 function buildLogoCellHTML(logoBase64) {
   if (logoBase64) {
     return `<p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;line-height:normal'>
-      <img src="${logoBase64}" style="max-width:90px;max-height:60px;object-fit:contain;" alt="Logo"/>
+      <img src="${logoBase64}" style="max-width:180px;max-height:120px;object-fit:contain;" alt="Logo"/>
     </p>`;
   }
   return `<p class=MsoNormal align=center style='margin-bottom:0in;text-align:center;line-height:normal'>
@@ -51,7 +51,7 @@ function buildLogoCellHTML(logoBase64) {
 
 function buildSealCellHTML(sealBase64) {
   if (sealBase64) {
-    return `<img src="${sealBase64}" style="max-width:100px;max-height:60px;object-fit:contain;margin-bottom:4px;" alt="Seal"/>`;
+    return `<img src="${sealBase64}" style="max-width:200px;max-height:120px;object-fit:contain;margin-bottom:4px;" alt="Seal"/>`;
   }
   return `&nbsp;`;
 }
