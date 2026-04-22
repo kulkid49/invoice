@@ -11,6 +11,42 @@ function esc(val) {
     .replace(/>/g, '&gt;');
 }
 
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  
+  // Helper to convert YYYY-MM-DD to DD-MM-YYYY
+  const convert = (s) => {
+    const parts = s.split('-');
+    if (parts.length === 3 && parts[0].length === 4) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return s;
+  };
+
+  // If it's a simple YYYY-MM-DD string
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return convert(dateStr);
+  }
+
+  // If it's a string that might contain a YYYY-MM-DD date (like in REF_NO_DATE)
+  // Replace all occurrences of YYYY-MM-DD with DD-MM-YYYY
+  const result = dateStr.replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, '$3-$2-$1');
+  if (result !== dateStr) return result;
+
+  // Fallback: try to parse it as a full date if it's not a mixed string
+  try {
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime()) && !dateStr.includes(' ') && !dateStr.includes('/') && !dateStr.includes('&')) {
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+  } catch (e) {}
+  
+  return dateStr;
+}
+
 function buildItemRows(items, currencySymbol) {
   if (!items || items.length === 0) {
     return `<tr>
@@ -130,15 +166,15 @@ export function renderInvoice(data) {
     .replace(/{{CONTACT}}/g, esc(companyDetails.contact))
     .replace(/{{EMAIL}}/g, esc(companyDetails.email))
     .replace(/{{INVOICE_NO}}/g, esc(invoiceDetails.invoiceNo))
-    .replace(/{{DATED}}/g, esc(invoiceDetails.dated))
+    .replace(/{{DATED}}/g, formatDate(invoiceDetails.dated))
     .replace(/{{DELIVERY_NOTE}}/g, esc(invoiceDetails.deliveryNote))
     .replace(/{{PAYMENT_TERMS}}/g, esc(invoiceDetails.paymentTerms))
-    .replace(/{{REF_NO_DATE}}/g, esc(invoiceDetails.refNoDate))
+    .replace(/{{REF_NO_DATE}}/g, formatDate(invoiceDetails.refNoDate))
     .replace(/{{OTHER_REF}}/g, esc(invoiceDetails.otherRef))
     .replace(/{{BUYERS_ORDER_NO}}/g, esc(invoiceDetails.buyersOrderNo))
-    .replace(/{{BUYERS_ORDER_DATED}}/g, esc(invoiceDetails.buyersOrderDated))
+    .replace(/{{BUYERS_ORDER_DATED}}/g, formatDate(invoiceDetails.buyersOrderDated))
     .replace(/{{DISPATCH_DOC_NO}}/g, esc(invoiceDetails.dispatchDocNo))
-    .replace(/{{DELIVERY_NOTE_DATE}}/g, esc(invoiceDetails.deliveryNoteDate))
+    .replace(/{{DELIVERY_NOTE_DATE}}/g, formatDate(invoiceDetails.deliveryNoteDate))
     .replace(/{{DISPATCHED_THROUGH}}/g, esc(invoiceDetails.dispatchedThrough))
     .replace(/{{DESTINATION}}/g, esc(invoiceDetails.destination))
     .replace(/{{BILL_OF_LADING}}/g, esc(invoiceDetails.billOfLading))
