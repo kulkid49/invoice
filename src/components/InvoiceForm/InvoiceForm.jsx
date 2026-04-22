@@ -242,7 +242,19 @@ export default function InvoiceForm({ data, onChange, errors = {} }) {
 
       {/* ── TAX & TOTALS ── */}
       <SectionHeader icon="💰" title="Tax & Totals" />
-      <Grid cols={2}>
+      <Grid cols={3}>
+        <Select
+          label="Currency"
+          id="tot-currency"
+          value={totals.currency || 'INR'}
+          onChange={v => tot('currency', v)}
+          options={[
+            { label: 'INR (₹)', value: 'INR' },
+            { label: 'USD ($)', value: 'USD' },
+            { label: 'EUR (€)', value: 'EUR' },
+            { label: 'GBP (£)', value: 'GBP' }
+          ]}
+        />
         <Select
           label="Tax Type"
           id="tot-tax-type"
@@ -276,10 +288,12 @@ export default function InvoiceForm({ data, onChange, errors = {} }) {
               color: 'var(--accent-light)',
               letterSpacing: '-0.02em'
             }}>
-              ₹ {(() => {
+              {(() => {
+                const currencySymbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£' };
+                const symbol = currencySymbols[totals.currency || 'INR'] || '₹';
                 const sub = items.reduce((s, i) => s + parseFloat(i.quantity || 0) * parseFloat(i.rate || 0), 0);
                 const tax = sub * parseFloat(totals.taxPercent || 0) / 100;
-                return (sub + tax).toFixed(2);
+                return `${symbol} ${(sub + tax).toFixed(2)}`;
               })()}
             </div>
           </div>

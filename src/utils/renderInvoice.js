@@ -11,7 +11,7 @@ function esc(val) {
     .replace(/>/g, '&gt;');
 }
 
-function buildItemRows(items) {
+function buildItemRows(items, currencySymbol) {
   if (!items || items.length === 0) {
     return `<tr>
       <td>&nbsp;</td>
@@ -33,7 +33,7 @@ function buildItemRows(items) {
      <td class="text-right">${esc(item.quantity)}</td>
      <td class="text-right">${esc(item.rate)}</td>
      <td class="text-right">${esc(item.per)}</td>
-     <td class="text-right font-bold">${amount}</td>
+     <td class="text-right font-bold">${currencySymbol} ${amount}</td>
     </tr>`;
   }).join('\n');
 }
@@ -70,6 +70,9 @@ export function renderInvoice(data) {
   const grandTotal = (subtotal + parseFloat(totalTaxAmount)).toFixed(2);
   const subtotalQty = items.reduce((sum, i) => sum + parseFloat(i.quantity || 0), 0);
 
+  const currencySymbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£' };
+  const currencySymbol = currencySymbols[totals.currency || 'INR'] || '₹';
+
   const amountInWords = numberToWords(grandTotal);
   const taxAmountWords = numberToWords(totalTaxAmount);
 
@@ -87,7 +90,7 @@ export function renderInvoice(data) {
       <td class="no-border-left no-border-right"></td>
       <td class="text-right">${halfPercent}%</td>
       <td class="no-border-left no-border-right"></td>
-      <td class="text-right font-bold">${halfAmount}</td>
+      <td class="text-right font-bold">${currencySymbol} ${halfAmount}</td>
     </tr>`;
 
     // SGST Row
@@ -98,7 +101,7 @@ export function renderInvoice(data) {
       <td class="no-border-left no-border-right"></td>
       <td class="text-right">${halfPercent}%</td>
       <td class="no-border-left no-border-right"></td>
-      <td class="text-right font-bold">${halfAmount}</td>
+      <td class="text-right font-bold">${currencySymbol} ${halfAmount}</td>
     </tr>`;
   } else {
     // VAT Row (default)
@@ -109,7 +112,7 @@ export function renderInvoice(data) {
       <td class="no-border-left no-border-right"></td>
       <td class="text-right">${taxPercent}%</td>
       <td class="no-border-left no-border-right"></td>
-      <td class="text-right font-bold">${totalTaxAmount}</td>
+      <td class="text-right font-bold">${currencySymbol} ${totalTaxAmount}</td>
     </tr>`;
   }
 
@@ -148,10 +151,10 @@ export function renderInvoice(data) {
     .replace(/{{BUYER_GSTIN}}/g, esc(buyerDetails.gstin))
     .replace(/{{BUYER_STATE}}/g, esc(buyerDetails.state))
     .replace(/{{BUYER_PIN}}/g, esc(buyerDetails.pinCode))
-    .replace('{{ITEMS_ROWS}}', buildItemRows(items))
+    .replace('{{ITEMS_ROWS}}', buildItemRows(items, currencySymbol))
     .replace('{{TAX_ROWS}}', taxRowsHTML)
     .replace(/{{SUBTOTAL_QTY}}/g, subtotalQty || '')
-    .replace(/{{GRAND_TOTAL}}/g, parseFloat(grandTotal) ? grandTotal : '')
+    .replace(/{{GRAND_TOTAL}}/g, parseFloat(grandTotal) ? `${currencySymbol} ${grandTotal}` : '')
     .replace(/{{AMOUNT_IN_WORDS}}/g, amountInWords)
     .replace(/{{TAX_AMOUNT_WORDS}}/g, taxAmountWords);
 
