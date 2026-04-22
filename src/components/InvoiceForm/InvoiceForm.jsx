@@ -178,6 +178,48 @@ export default function InvoiceForm({ data, onChange, errors = {} }) {
         <Field label="Pin Code" id="cons-pin" value={consigneeDetails.pinCode} onChange={v => cons('pinCode', v)} placeholder="560001" />
       </Grid>
 
+      {/* ── SAME AS CONSIGNEE ── */}
+      <div style={{
+        padding: '12px 16px',
+        margin: '8px 0',
+        background: 'var(--accent-glow)',
+        border: '1px dashed var(--accent)',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        cursor: 'pointer'
+      }} onClick={() => {
+        onChange({
+          ...data,
+          buyerDetails: {
+            ...buyerDetails,
+            name: consigneeDetails.name,
+            address: consigneeDetails.address,
+            gstin: consigneeDetails.gstin,
+            state: consigneeDetails.state,
+            pinCode: consigneeDetails.pinCode
+          }
+        });
+      }}>
+        <input 
+          type="checkbox" 
+          id="copy-consignee" 
+          style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+          checked={
+            buyerDetails.name === consigneeDetails.name &&
+            buyerDetails.address === consigneeDetails.address &&
+            buyerDetails.gstin === consigneeDetails.gstin &&
+            buyerDetails.state === consigneeDetails.state &&
+            buyerDetails.pinCode === consigneeDetails.pinCode
+          }
+          onChange={() => {}} // Handled by div onClick for better UX
+        />
+        <label htmlFor="copy-consignee" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--accent-light)', cursor: 'pointer' }}>
+          Buyer Details Same as Consignee
+        </label>
+      </div>
+
       {/* ── BUYER ── */}
       <SectionHeader icon="🧾" title="Buyer (Bill To)" />
       <Grid cols={1}>
