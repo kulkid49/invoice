@@ -11,19 +11,19 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
   body {
     font-family: "Arial", sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
     color: #000;
     line-height: 1.4;
     font-size: 8pt;
   }
   .invoice-container {
-    width: 210mm;
+    width: 100%;
+    max-width: 210mm;
+    margin: 0 auto;
     min-height: 297mm;
     background: #fdfaf3; /* Subtle papery tint */
-    padding: 10mm;
+    padding: 8mm;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     box-sizing: border-box;
     position: relative;
@@ -104,7 +104,21 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
   }
   
   @media print {
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { 
+      background: none; 
+      padding: 0;
+      margin: 0;
+      -webkit-print-color-adjust: exact; 
+      print-color-adjust: exact; 
+    }
+    .invoice-container {
+      width: 210mm;
+      height: 297mm;
+      padding: 8mm;
+      margin: 0;
+      box-shadow: none;
+      page-break-after: always;
+    }
   }
 </style>
 </head>
