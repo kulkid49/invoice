@@ -267,13 +267,21 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
       </td>
     </tr>
 
-    <!-- Tax amount + Declaration & Signatures -->
+    <!-- Tax amount + Bank Details + Declaration & Signatures -->
     <tr>
       <td colspan="5" class="no-border-left no-border-right no-border-bottom">
         <span class="font-bold">Tax Amount (in words):</span> <span class="font-italic">{{TAX_AMOUNT_WORDS}}</span>
       </td>
-      <td colspan="5" rowspan="2" class="text-center">
+      <td colspan="5" rowspan="3" class="text-center">
         {{SEAL_CELL}}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5" class="no-border-left no-border-right no-border-bottom">
+        <span class="font-bold">Company's Bank Details</span><br>
+        Bank Name : {{BANK_NAME}}<br>
+        A/c No. : {{BANK_ACC}}<br>
+        Branch & IFS Code : {{BANK_IFSC}}
       </td>
     </tr>
     <tr>

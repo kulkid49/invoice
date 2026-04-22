@@ -128,6 +128,16 @@ export default function InvoiceForm({ data, onChange, errors = {} }) {
         <Field label="Email" id="co-email" type="email" value={companyDetails.email} onChange={v => co('email', v)} placeholder="billing@company.com" />
       </Grid>
 
+      {/* ── BANK DETAILS ── */}
+      <SectionHeader icon="🏦" title="Bank Details" />
+      <Grid cols={1}>
+        <Field label="Bank Name" id="bank-name" value={companyDetails.bankName} onChange={v => co('bankName', v)} placeholder="HDFC Bank" />
+      </Grid>
+      <Grid cols={2}>
+        <Field label="A/c No." id="bank-acc" value={companyDetails.bankAcc} onChange={v => co('bankAcc', v)} placeholder="1234567890" />
+        <Field label="Branch & IFS Code" id="bank-ifsc" value={companyDetails.bankIfsc} onChange={v => co('bankIfsc', v)} placeholder="MUMBAI, HDFC0001234" />
+      </Grid>
+
       {/* ── INVOICE DETAILS ── */}
       <SectionHeader icon="📋" title="Invoice Details" />
       <Grid cols={2}>
