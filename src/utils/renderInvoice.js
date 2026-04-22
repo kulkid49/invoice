@@ -51,7 +51,7 @@ function buildLogoCellHTML(logoBase64) {
 
 function buildSealCellHTML(sealBase64) {
   if (sealBase64) {
-    return `<img src="${sealBase64}" style="max-width:400px;max-height:240px;object-fit:contain;margin-bottom:4px;" alt="Seal"/>`;
+    return `<img src="${sealBase64}" style="max-width:400px;max-height:240px;object-fit:contain;margin-bottom:0;" alt="Seal"/>`;
   }
   return `&nbsp;`;
 }
