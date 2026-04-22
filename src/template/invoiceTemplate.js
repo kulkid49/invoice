@@ -274,11 +274,11 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
       </td>
     </tr>
     <tr>
-      <td colspan="5" class="no-border-left no-border-right no-border-bottom">
+      <td colspan="5" class="no-border-left no-border-bottom">
         <span class="font-bold">Declaration</span><br>
         We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.
       </td>
-      <td colspan="5" class="no-border-left no-border-right no-border-bottom">
+      <td colspan="5" class="no-border-right no-border-bottom">
         <span class="font-bold">Company's Bank Details</span><br>
         Bank Name : {{BANK_NAME}}<br>
         A/c No. : {{BANK_ACC}}<br>
@@ -289,11 +289,18 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
     <!-- Signatures -->
     <tr class="footer-row">
       <td colspan="5" class="text-center font-bold">
-        {{SEAL_CELL}}<br>
         Authorised Signatory
       </td>
       <td colspan="5" class="text-center font-bold no-border-left">
+        {{SEAL_CELL}}<br>
         Customer's Seal and Signature
+      </td>
+    </tr>
+    <tr class="footer-row">
+      <td colspan="5" class="text-center font-bold no-border-top" style="vertical-align: bottom; height: 40px;">
+        {{AUTH_SIGNATORY}}
+      </td>
+      <td colspan="5" class="text-center font-bold no-border-left no-border-top">
       </td>
     </tr>
   </table>

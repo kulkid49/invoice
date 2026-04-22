@@ -157,6 +157,7 @@ export function renderInvoice(data) {
     .replace(/{{BANK_NAME}}/g, esc(companyDetails.bankName || ''))
     .replace(/{{BANK_ACC}}/g, esc(companyDetails.bankAcc || ''))
     .replace(/{{BANK_IFSC}}/g, esc(companyDetails.bankIfsc || ''))
+    .replace(/{{AUTH_SIGNATORY}}/g, esc(companyDetails.authSignatory || ''))
     .replace('{{ITEMS_ROWS}}', buildItemRows(items, currencySymbol))
     .replace('{{TAX_ROWS}}', taxRowsHTML)
     .replace(/{{SUBTOTAL_QTY}}/g, subtotalQty || '')

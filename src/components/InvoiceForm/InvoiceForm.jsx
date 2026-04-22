@@ -107,6 +107,9 @@ export default function InvoiceForm({ data, onChange, errors = {} }) {
         <ImageUpload label="Business Logo" value={logoBase64} onChange={v => onChange({ ...data, logoBase64: v })} placeholder="Upload logo (PNG/JPG)" />
         <ImageUpload label="Authorised Seal / Signature" value={sealBase64} onChange={v => onChange({ ...data, sealBase64: v })} placeholder="Upload seal or signature" />
       </Grid>
+      <Grid cols={1}>
+        <Field label="Authorised Signatory Name" id="auth-name" value={companyDetails.authSignatory} onChange={v => co('authSignatory', v)} placeholder="Name of Authorized Person" />
+      </Grid>
 
       {/* ── COMPANY DETAILS ── */}
       <SectionHeader icon="🏢" title="Company Details" />
