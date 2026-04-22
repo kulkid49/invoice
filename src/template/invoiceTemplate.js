@@ -54,7 +54,7 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
     border-collapse: collapse;
     margin-bottom: 20px;
     table-layout: fixed;
-    border: 2px solid #000;
+    border: 1px solid #000;
   }
   td {
     border: 1px solid #000;
