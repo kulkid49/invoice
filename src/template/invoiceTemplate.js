@@ -269,25 +269,20 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
 
     <!-- Tax amount + Bank Details + Declaration & Signatures -->
     <tr>
-      <td colspan="5" class="no-border-left no-border-right no-border-bottom">
+      <td colspan="10" class="no-border-left no-border-right no-border-bottom">
         <span class="font-bold">Tax Amount (in words):</span> <span class="font-italic">{{TAX_AMOUNT_WORDS}}</span>
-      </td>
-      <td colspan="5" rowspan="3" class="text-center">
-        {{SEAL_CELL}}
       </td>
     </tr>
     <tr>
+      <td colspan="5" class="no-border-left no-border-right no-border-bottom">
+        <span class="font-bold">Declaration</span><br>
+        We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.
+      </td>
       <td colspan="5" class="no-border-left no-border-right no-border-bottom">
         <span class="font-bold">Company's Bank Details</span><br>
         Bank Name : {{BANK_NAME}}<br>
         A/c No. : {{BANK_ACC}}<br>
         Branch & IFS Code : {{BANK_IFSC}}
-      </td>
-    </tr>
-    <tr>
-      <td colspan="5" class="no-border-left no-border-right">
-        <span class="font-bold">Declaration</span><br>
-        We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.
       </td>
     </tr>
 
@@ -297,6 +292,7 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
         Customer's Seal and Signature
       </td>
       <td colspan="5" class="text-center font-bold no-border-left">
+        {{SEAL_CELL}}<br>
         Authorised Signatory
       </td>
     </tr>
