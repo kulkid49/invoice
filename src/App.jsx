@@ -109,11 +109,13 @@ export default function App() {
 
     const container = document.createElement('div');
     container.innerHTML = htmlString;
-    // Set width to match A4 210mm (~794px) exactly to avoid any responsive shrinking
-    container.style.width = '794px';
-    container.style.background = 'white';
-    container.style.position = 'fixed';
-    container.style.top = '-10000px'; // Hide it far away
+    // Ensure the container is "visible" to the capture engine but hidden from the user
+    container.style.position = 'absolute';
+    container.style.left = '0';
+    container.style.top = '0';
+    container.style.opacity = '0';
+    container.style.pointerEvents = 'none';
+    container.style.width = '794px'; // Match the A4 width in the template
     document.body.appendChild(container);
 
     const invoiceNo = invoiceData.invoiceDetails?.invoiceNo || 'invoice';
@@ -121,17 +123,16 @@ export default function App() {
 
     await html2pdf()
       .set({
-        margin: 0, // Set to 0 because padding is already handled in the template
+        margin: 0,
         filename,
         html2canvas: { 
           scale: 2, 
           useCORS: true, 
           logging: false,
-          width: 794, 
-          windowWidth: 794,
-          letterRendering: true
+          width: 794,
+          windowWidth: 794
         },
-        jsPDF: { unit: 'px', format: [794, 1123], hotfixes: ['px_scaling'] },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: 'avoid-all' }
       })
       .from(container)
