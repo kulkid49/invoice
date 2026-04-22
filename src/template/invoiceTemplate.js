@@ -270,7 +270,7 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
     <!-- Tax amount + Declaration & Signatures -->
     <tr>
       <td colspan="5" class="no-border-left no-border-right no-border-bottom">
-        Tax Amount (in words): <span class="font-italic">{{TAX_AMOUNT_WORDS}}</span>
+        <span class="font-bold">Tax Amount (in words):</span> <span class="font-italic">{{TAX_AMOUNT_WORDS}}</span>
       </td>
       <td colspan="5" rowspan="2" class="text-center">
         {{SEAL_CELL}}

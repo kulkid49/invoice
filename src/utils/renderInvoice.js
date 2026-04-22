@@ -73,8 +73,11 @@ export function renderInvoice(data) {
   const currencySymbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£' };
   const currencySymbol = currencySymbols[totals.currency || 'INR'] || '₹';
 
-  const amountInWords = numberToWords(grandTotal);
-  const taxAmountWords = numberToWords(totalTaxAmount);
+  const currencyNames = { INR: 'INR', USD: 'USD', EUR: 'EUR', GBP: 'GBP' };
+  const currencyName = currencyNames[totals.currency || 'INR'] || 'INR';
+
+  const amountInWords = `${currencyName} ${numberToWords(grandTotal)}`;
+  const taxAmountWords = `${currencyName} ${numberToWords(totalTaxAmount)}`;
 
   // Build Tax Rows
   let taxRowsHTML = '';
