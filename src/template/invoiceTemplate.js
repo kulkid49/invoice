@@ -289,11 +289,11 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
     <!-- Signatures -->
     <tr class="footer-row">
       <td colspan="5" class="text-center font-bold">
-        Customer's Seal and Signature
-      </td>
-      <td colspan="5" class="text-center font-bold no-border-left">
         {{SEAL_CELL}}<br>
         Authorised Signatory
+      </td>
+      <td colspan="5" class="text-center font-bold no-border-left">
+        Customer's Seal and Signature
       </td>
     </tr>
   </table>
