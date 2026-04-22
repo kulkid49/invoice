@@ -8,24 +8,53 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
 <meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <style>
   * { box-sizing: border-box; }
-  body { 
-    font-family: "Arial", sans-serif; 
-    margin: 0; 
-    padding: 0; 
+  body {
+    font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
     color: #000;
     line-height: 1.4;
     font-size: 8pt;
   }
   .invoice-container {
-    width: 720px; /* Reduced from 754px to fit A4 margins perfectly */
-    margin: 0 auto;
-    background: #fff;
+    width: 210mm;
+    min-height: 297mm;
+    background: #fdfaf3; /* Subtle papery tint */
+    padding: 10mm;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Scanned paper effect overlay */
+  .invoice-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      url("https://www.transparenttextures.com/patterns/paper-fibers.png"),
+      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.05) 100%);
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .invoice-content {
+    position: relative;
+    z-index: 2;
+    filter: contrast(1.05) brightness(0.98) sepia(0.05); /* Slight "scanned" filter */
   }
   table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 20px;
     table-layout: fixed;
-    border: 2px solid #000; /* Thicker outside border */
+    border: 2px solid #000;
   }
   td {
     border: 1px solid #000;
@@ -81,8 +110,8 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
 </head>
 <body>
 <div class="invoice-container">
-
-  <table cellspacing=0 cellpadding=0>
+  <div class="invoice-content">
+    <table cellspacing=0 cellpadding=0>
     <!-- Main Title -->
     <tr>
       <td colspan="10" class="header-cell">Invoice</td>
@@ -298,7 +327,7 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
       </td>
     </tr>
   </table>
-
+  </div>
 </div>
 </body>
 </html>`;
