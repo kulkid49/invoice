@@ -18,10 +18,9 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
     font-size: 8pt;
   }
   .invoice-container {
-    width: 100%;
-    max-width: 210mm;
-    margin: 0 auto;
-    min-height: 297mm;
+    width: 794px; /* Exact A4 width in pixels at 96dpi */
+    margin: 0;
+    min-height: 1123px; /* Exact A4 height in pixels */
     background: #fdfaf3; /* Subtle papery tint */
     padding: 8mm;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -52,7 +51,7 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin: 0; /* Remove bottom margin to prevent shrinking/shifting */
     table-layout: fixed;
     border: 1px solid #000;
   }

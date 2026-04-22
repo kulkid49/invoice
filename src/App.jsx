@@ -109,9 +109,11 @@ export default function App() {
 
     const container = document.createElement('div');
     container.innerHTML = htmlString;
-    // Set width to match A4 210mm (~794px) to avoid cutoff
+    // Set width to match A4 210mm (~794px) exactly to avoid any responsive shrinking
     container.style.width = '794px';
     container.style.background = 'white';
+    container.style.position = 'fixed';
+    container.style.top = '-10000px'; // Hide it far away
     document.body.appendChild(container);
 
     const invoiceNo = invoiceData.invoiceDetails?.invoiceNo || 'invoice';
@@ -119,16 +121,17 @@ export default function App() {
 
     await html2pdf()
       .set({
-        margin: [5, 5, 5, 5], // Reduced margins for better fit
+        margin: 0, // Set to 0 because padding is already handled in the template
         filename,
         html2canvas: { 
           scale: 2, 
           useCORS: true, 
           logging: false,
           width: 794, 
-          windowWidth: 794
+          windowWidth: 794,
+          letterRendering: true
         },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        jsPDF: { unit: 'px', format: [794, 1123], hotfixes: ['px_scaling'] },
         pagebreak: { mode: 'avoid-all' }
       })
       .from(container)
