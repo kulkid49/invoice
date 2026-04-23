@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { renderInvoice } from '../utils/renderInvoice.js';
 
-export default function InvoicePreview({ data, onDownloadPDF }) {
+export default function InvoicePreview({ data }) {
   const iframeRef = useRef();
 
   const html = renderInvoice(data);
@@ -35,14 +35,15 @@ export default function InvoicePreview({ data, onDownloadPDF }) {
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button
-            className="btn btn-secondary btn-sm"
+            className="btn btn-success btn-sm"
             onClick={() => {
               if (iframeRef.current) {
+                const invoiceNo = data.invoiceDetails?.invoiceNo || 'invoice';
+                iframeRef.current.contentDocument.title = `${invoiceNo}_${new Date().toISOString().split('T')[0]}`;
                 iframeRef.current.contentWindow.print();
               }
             }}
-          >🖨️ Print</button>
-          <button className="btn btn-success btn-sm" onClick={onDownloadPDF}>
+          >
             ⬇️ Download PDF
           </button>
         </div>

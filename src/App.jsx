@@ -103,53 +103,6 @@ export default function App() {
     setView('editor');
   };
 
-  const handleDownloadPDF = async () => {
-    const html2pdf = (await import('html2pdf.js')).default;
-    const htmlString = renderInvoice(invoiceData);
-
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.left = '-9999px';
-    iframe.style.top = '0';
-    iframe.style.width = '794px';
-    iframe.style.height = '1123px'; // A4 height
-    iframe.style.border = 'none';
-    document.body.appendChild(iframe);
-
-    const doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(htmlString);
-    doc.close();
-
-    // Give it a short moment to render fonts and styles
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    const element = doc.querySelector('.invoice-container') || doc.body;
-
-    const invoiceNo = invoiceData.invoiceDetails?.invoiceNo || 'invoice';
-    const filename = `${invoiceNo}_${new Date().toISOString().split('T')[0]}.pdf`;
-
-    await html2pdf()
-      .set({
-        margin: 0,
-        filename,
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { 
-          scale: 4, 
-          useCORS: true, 
-          logging: false,
-          width: 794,
-          windowWidth: 794
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: 'avoid-all' }
-      })
-      .from(element)
-      .save();
-
-    document.body.removeChild(iframe);
-  };
-
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
 
@@ -241,7 +194,7 @@ export default function App() {
 
           {/* Preview panel */}
           <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <InvoicePreview data={invoiceData} onDownloadPDF={handleDownloadPDF} />
+            <InvoicePreview data={invoiceData} />
           </div>
         </div>
       )}
