@@ -107,16 +107,24 @@ export default function App() {
     const html2pdf = (await import('html2pdf.js')).default;
     const htmlString = renderInvoice(invoiceData);
 
-    const container = document.createElement('div');
-    container.innerHTML = htmlString;
-    // Ensure the container is "visible" to the capture engine but hidden from the user
-    container.style.position = 'absolute';
-    container.style.left = '0';
-    container.style.top = '0';
-    container.style.opacity = '0';
-    container.style.pointerEvents = 'none';
-    container.style.width = '794px'; // Match the A4 width in the template
-    document.body.appendChild(container);
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.left = '-9999px';
+    iframe.style.top = '0';
+    iframe.style.width = '794px';
+    iframe.style.height = '1123px'; // A4 height
+    iframe.style.border = 'none';
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(htmlString);
+    doc.close();
+
+    // Give it a short moment to render fonts and styles
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    const element = doc.querySelector('.invoice-container') || doc.body;
 
     const invoiceNo = invoiceData.invoiceDetails?.invoiceNo || 'invoice';
     const filename = `${invoiceNo}_${new Date().toISOString().split('T')[0]}.pdf`;
@@ -135,10 +143,10 @@ export default function App() {
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: 'avoid-all' }
       })
-      .from(container)
+      .from(element)
       .save();
 
-    document.body.removeChild(container);
+    document.body.removeChild(iframe);
   };
 
   return (
