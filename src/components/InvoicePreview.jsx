@@ -8,6 +8,12 @@ export default function InvoicePreview({ data, onDownloadPDF }) {
 
   const html = renderInvoice(data);
 
+  const handleDownloadPDF = () => {
+    if (typeof onDownloadPDF === 'function') {
+      onDownloadPDF(iframeRef.current);
+    }
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Toolbar */}
@@ -42,7 +48,7 @@ export default function InvoicePreview({ data, onDownloadPDF }) {
               }
             }}
           >🖨️ Print</button>
-          <button className="btn btn-success btn-sm" onClick={onDownloadPDF}>
+          <button className="btn btn-success btn-sm" onClick={handleDownloadPDF}>
             ⬇️ Download PDF
           </button>
         </div>

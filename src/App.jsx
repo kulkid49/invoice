@@ -44,9 +44,14 @@ export default function App() {
   const [invoiceName, setInvoiceName] = useState('');
   const [invoiceStatus, setInvoiceStatus] = useState('draft');
   const autoSaveTimer = useRef(null);
+  const html2pdfRef = useRef(null);
 
   // Load vault on mount
   useEffect(() => { setVault(loadVault()); }, []);
+
+  useEffect(() => {
+    import('html2pdf.js').then((m) => { html2pdfRef.current = m.default; });
+  }, []);
 
   // Auto-save draft debounced
   useEffect(() => {
@@ -103,50 +108,81 @@ export default function App() {
     setView('editor');
   };
 
-  const handleDownloadPDF = async () => {
-    const html2pdf = (await import('html2pdf.js')).default;
+  const handleDownloadPDF = async (iframeEl) => {
+    const html2pdf = html2pdfRef.current || (await import('html2pdf.js')).default;
+
+    const buildExportNodeFromDoc = (doc) => {
+      const styleText = Array.from(doc.querySelectorAll('style'))
+        .map((s) => s.textContent || '')
+        .join('\n');
+
+      const root = doc.querySelector('.invoice-container') || doc.body;
+
+      const wrapper = document.createElement('div');
+      wrapper.style.width = '794px';
+      wrapper.style.background = 'white';
+
+      if (styleText.trim()) {
+        const styleEl = document.createElement('style');
+        styleEl.textContent = styleText;
+        wrapper.appendChild(styleEl);
+      }
+
+      const cloned = root.cloneNode(true);
+      wrapper.appendChild(cloned);
+      return wrapper;
+    };
+
+    const buildExportNodeFromHTMLString = (htmlString) => {
+      const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+      return buildExportNodeFromDoc(doc);
+    };
+
     const htmlString = renderInvoice(invoiceData);
 
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.left = '-9999px';
-    iframe.style.top = '0';
-    iframe.style.width = '794px';
-    iframe.style.height = '1123px'; // A4 height
-    iframe.style.border = 'none';
-    document.body.appendChild(iframe);
+    let exportNode = null;
+    try {
+      const iframeDoc = iframeEl?.contentDocument;
+      exportNode = iframeDoc ? buildExportNodeFromDoc(iframeDoc) : buildExportNodeFromHTMLString(htmlString);
+    } catch {
+      exportNode = buildExportNodeFromHTMLString(htmlString);
+    }
 
-    const doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(htmlString);
-    doc.close();
+    const exportOverrides = document.createElement('style');
+    exportOverrides.textContent = `
+      .invoice-container::before { content: none !important; display: none !important; background-image: none !important; }
+      .invoice-content { filter: none !important; }
+    `;
+    exportNode.prepend(exportOverrides);
 
-    // Give it a short moment to render fonts and styles
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    const element = doc.querySelector('.invoice-container') || doc.body;
+    exportNode.style.position = 'fixed';
+    exportNode.style.left = '-10000px';
+    exportNode.style.top = '0';
+    document.body.appendChild(exportNode);
+    exportNode.getBoundingClientRect();
 
     const invoiceNo = invoiceData.invoiceDetails?.invoiceNo || 'invoice';
     const filename = `${invoiceNo}_${new Date().toISOString().split('T')[0]}.pdf`;
 
-    await html2pdf()
-      .set({
-        margin: 0,
-        filename,
-        html2canvas: { 
-          scale: 2, 
-          useCORS: true, 
-          logging: false,
-          width: 794,
-          windowWidth: 794
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: 'avoid-all' }
-      })
-      .from(element)
-      .save();
+    const opts = {
+      margin: 0,
+      filename,
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: 794,
+        windowWidth: 794,
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: 'avoid-all' },
+    };
 
-    document.body.removeChild(iframe);
+    try {
+      await html2pdf().set(opts).from(exportNode).save();
+    } finally {
+      document.body.removeChild(exportNode);
+    }
   };
 
   return (
