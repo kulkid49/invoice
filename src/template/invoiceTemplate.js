@@ -21,32 +21,17 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
     width: 794px; /* Exact A4 width in pixels at 96dpi */
     margin: 0;
     min-height: 1123px; /* Exact A4 height in pixels */
-    background: #fdfaf3; /* Subtle papery tint */
+    background-color: #fdfaf3; /* Subtle papery tint */
+    background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
     padding: 8mm;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
   }
-  /* Scanned paper effect overlay */
-  .invoice-container::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-      url("https://www.transparenttextures.com/patterns/paper-fibers.png"),
-      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.05) 100%);
-    opacity: 0.4;
-    pointer-events: none;
-    z-index: 1;
-  }
   .invoice-content {
     position: relative;
     z-index: 2;
-    filter: contrast(1.05) brightness(0.98) sepia(0.05); /* Slight "scanned" filter */
   }
   table {
     width: 100%;

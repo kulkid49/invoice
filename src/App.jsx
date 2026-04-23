@@ -133,8 +133,9 @@ export default function App() {
       .set({
         margin: 0,
         filename,
+        image: { type: 'jpeg', quality: 1 },
         html2canvas: { 
-          scale: 2, 
+          scale: 4, 
           useCORS: true, 
           logging: false,
           width: 794,
