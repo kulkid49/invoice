@@ -108,81 +108,120 @@ export default function App() {
     setView('editor');
   };
 
-  const handleDownloadPDF = async (iframeEl) => {
-    const html2pdf = html2pdfRef.current || (await import('html2pdf.js')).default;
+  const handleDownloadPDF = (iframeEl) => {
+    const htmlFromIframe = (() => {
+      try {
+        const doc = iframeEl?.contentDocument;
+        if (!doc) return null;
+        return `<!doctype html>\n${doc.documentElement.outerHTML}`;
+      } catch {
+        return null;
+      }
+    })();
 
-    const buildExportNodeFromDoc = (doc) => {
-      const styleText = Array.from(doc.querySelectorAll('style'))
-        .map((s) => s.textContent || '')
-        .join('\n');
+    const htmlString = htmlFromIframe || renderInvoice(invoiceData);
 
-      const root = doc.querySelector('.invoice-container') || doc.body;
+    const printWindow = window.open('', '_blank', 'noopener,noreferrer');
+    if (printWindow) {
+      try {
+        printWindow.document.open();
+        printWindow.document.write(htmlString);
+        printWindow.document.close();
+        printWindow.focus();
 
-      const wrapper = document.createElement('div');
-      wrapper.style.width = '794px';
-      wrapper.style.background = 'white';
+        const triggerPrint = () => {
+          try {
+            printWindow.focus();
+            printWindow.print();
+          } catch {}
+        };
 
-      if (styleText.trim()) {
-        const styleEl = document.createElement('style');
-        styleEl.textContent = styleText;
-        wrapper.appendChild(styleEl);
+        printWindow.onload = triggerPrint;
+        setTimeout(triggerPrint, 250);
+
+        printWindow.onafterprint = () => {
+          try { printWindow.close(); } catch {}
+        };
+      } catch {
+        try { printWindow.close(); } catch {}
+      }
+      return;
+    }
+
+    (async () => {
+      const html2pdf = html2pdfRef.current || (await import('html2pdf.js')).default;
+
+      const buildExportNodeFromDoc = (doc) => {
+        const styleText = Array.from(doc.querySelectorAll('style'))
+          .map((s) => s.textContent || '')
+          .join('\n');
+
+        const root = doc.querySelector('.invoice-container') || doc.body;
+
+        const wrapper = document.createElement('div');
+        wrapper.style.width = '794px';
+        wrapper.style.background = 'white';
+
+        if (styleText.trim()) {
+          const styleEl = document.createElement('style');
+          styleEl.textContent = styleText;
+          wrapper.appendChild(styleEl);
+        }
+
+        const cloned = root.cloneNode(true);
+        wrapper.appendChild(cloned);
+        return wrapper;
+      };
+
+      const buildExportNodeFromHTMLString = (raw) => {
+        const doc = new DOMParser().parseFromString(raw, 'text/html');
+        return buildExportNodeFromDoc(doc);
+      };
+
+      let exportNode = null;
+      try {
+        const iframeDoc = iframeEl?.contentDocument;
+        exportNode = iframeDoc ? buildExportNodeFromDoc(iframeDoc) : buildExportNodeFromHTMLString(htmlString);
+      } catch {
+        exportNode = buildExportNodeFromHTMLString(htmlString);
       }
 
-      const cloned = root.cloneNode(true);
-      wrapper.appendChild(cloned);
-      return wrapper;
-    };
+      const exportOverrides = document.createElement('style');
+      exportOverrides.textContent = `
+        .invoice-container::before { content: none !important; display: none !important; background-image: none !important; }
+        .invoice-content { filter: none !important; }
+      `;
+      exportNode.prepend(exportOverrides);
 
-    const buildExportNodeFromHTMLString = (htmlString) => {
-      const doc = new DOMParser().parseFromString(htmlString, 'text/html');
-      return buildExportNodeFromDoc(doc);
-    };
+      exportNode.style.position = 'fixed';
+      exportNode.style.left = '-10000px';
+      exportNode.style.top = '0';
+      document.body.appendChild(exportNode);
+      exportNode.getBoundingClientRect();
 
-    const htmlString = renderInvoice(invoiceData);
+      const invoiceNo = invoiceData.invoiceDetails?.invoiceNo || 'invoice';
+      const filename = `${invoiceNo}_${new Date().toISOString().split('T')[0]}.pdf`;
 
-    let exportNode = null;
-    try {
-      const iframeDoc = iframeEl?.contentDocument;
-      exportNode = iframeDoc ? buildExportNodeFromDoc(iframeDoc) : buildExportNodeFromHTMLString(htmlString);
-    } catch {
-      exportNode = buildExportNodeFromHTMLString(htmlString);
-    }
+      const opts = {
+        margin: 0,
+        filename,
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          width: 794,
+          windowWidth: 794,
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: 'avoid-all' },
+      };
 
-    const exportOverrides = document.createElement('style');
-    exportOverrides.textContent = `
-      .invoice-container::before { content: none !important; display: none !important; background-image: none !important; }
-      .invoice-content { filter: none !important; }
-    `;
-    exportNode.prepend(exportOverrides);
-
-    exportNode.style.position = 'fixed';
-    exportNode.style.left = '-10000px';
-    exportNode.style.top = '0';
-    document.body.appendChild(exportNode);
-    exportNode.getBoundingClientRect();
-
-    const invoiceNo = invoiceData.invoiceDetails?.invoiceNo || 'invoice';
-    const filename = `${invoiceNo}_${new Date().toISOString().split('T')[0]}.pdf`;
-
-    const opts = {
-      margin: 0,
-      filename,
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        width: 794,
-        windowWidth: 794,
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: 'avoid-all' },
-    };
-
-    try {
-      await html2pdf().set(opts).from(exportNode).save();
-    } finally {
-      document.body.removeChild(exportNode);
-    }
+      try {
+        await html2pdf().set(opts).from(exportNode).save();
+      } finally {
+        document.body.removeChild(exportNode);
+      }
+    })();
   };
 
   return (

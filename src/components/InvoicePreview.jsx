@@ -40,14 +40,6 @@ export default function InvoicePreview({ data, onDownloadPDF }) {
           }}>LIVE</span>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button
-            className="btn btn-secondary btn-sm"
-            onClick={() => {
-              if (iframeRef.current) {
-                iframeRef.current.contentWindow.print();
-              }
-            }}
-          >🖨️ Print</button>
           <button className="btn btn-success btn-sm" onClick={handleDownloadPDF}>
             ⬇️ Download PDF
           </button>

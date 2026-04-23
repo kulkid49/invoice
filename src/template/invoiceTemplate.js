@@ -103,6 +103,10 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
   }
   
   @media print {
+    @page {
+      size: A4;
+      margin: 0;
+    }
     body { 
       background: none; 
       padding: 0;
