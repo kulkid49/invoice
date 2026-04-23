@@ -6,18 +6,16 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+</head>
+<body>
+<div class="invoice-container">
 <style>
   * { box-sizing: border-box; }
-  body {
+  .invoice-container {
     font-family: "Arial", sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
     color: #000;
     line-height: 1.4;
     font-size: 8pt;
-  }
-  .invoice-container {
     width: 794px; /* Exact A4 width in pixels at 96dpi */
     margin: 0;
     min-height: 1123px; /* Exact A4 height in pixels */
@@ -33,14 +31,14 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
     position: relative;
     z-index: 2;
   }
-  table {
+  .invoice-container table {
     width: 100%;
     border-collapse: collapse;
     margin: 0; /* Remove bottom margin to prevent shrinking/shifting */
     table-layout: fixed;
     border: 1px solid #000;
   }
-  td {
+  .invoice-container td {
     border: 1px solid #000;
     padding: 8px 10px;
     vertical-align: top;
@@ -78,7 +76,7 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
   }
   
   /* Table row height logic */
-  tr { height: auto; }
+  .invoice-container tr { height: auto; }
   
   /* Footer alignment */
   .footer-row td {
@@ -105,9 +103,6 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
     }
   }
 </style>
-</head>
-<body>
-<div class="invoice-container">
   <div class="invoice-content">
     <table cellspacing=0 cellpadding=0>
     <!-- Main Title -->
