@@ -1,17 +1,19 @@
 // InvoicePreview.jsx — renders invoice HTML in an isolated iframe
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { renderInvoice } from '../utils/renderInvoice.js';
 
 export default function InvoicePreview({ data, onDownloadPDF }) {
   const iframeRef = useRef();
+  const [isReady, setIsReady] = useState(false);
 
   const html = renderInvoice(data);
 
-  const handleDownloadPDF = () => {
-    if (typeof onDownloadPDF === 'function') {
-      onDownloadPDF(iframeRef.current);
-    }
+  const handlePrint = () => {
+    const win = iframeRef.current?.contentWindow;
+    if (!win) return;
+    try { win.focus(); } catch {}
+    try { win.print(); } catch {}
   };
 
   return (
@@ -40,8 +42,8 @@ export default function InvoicePreview({ data, onDownloadPDF }) {
           }}>LIVE</span>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button className="btn btn-success btn-sm" onClick={handleDownloadPDF}>
-            ⬇️ Download PDF
+          <button className="btn btn-secondary btn-sm" onClick={handlePrint} disabled={!isReady}>
+            🖨️ Print
           </button>
         </div>
       </div>
@@ -59,6 +61,7 @@ export default function InvoicePreview({ data, onDownloadPDF }) {
           <iframe
             ref={iframeRef}
             srcDoc={html}
+            onLoad={() => setIsReady(true)}
             style={{
               width: '100%',
               minHeight: 900,
@@ -67,7 +70,7 @@ export default function InvoicePreview({ data, onDownloadPDF }) {
               display: 'block'
             }}
             title="Invoice Preview"
-            sandbox="allow-same-origin"
+            sandbox="allow-same-origin allow-modals"
           />
         </div>
       </div>
