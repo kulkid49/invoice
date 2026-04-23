@@ -116,12 +116,19 @@ export const INVOICE_TEMPLATE = `<!DOCTYPE html>
     }
     .invoice-container {
       width: 210mm;
-      height: 297mm;
+      min-height: 297mm;
+      height: auto;
       padding: 8mm;
       margin: 0;
       box-shadow: none;
-      page-break-after: always;
+      overflow: visible;
     }
+    .invoice-content {
+      filter: none;
+      overflow: visible;
+    }
+    table { break-inside: auto; page-break-inside: auto; }
+    tr { break-inside: avoid; page-break-inside: avoid; }
   }
 </style>
 </head>
